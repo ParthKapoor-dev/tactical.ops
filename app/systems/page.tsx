@@ -18,8 +18,22 @@ import {
   Settings,
 } from "lucide-react"
 
+type System = {
+  id: string
+  name: string
+  type: "Primary Server" | "Database" | "Firewall" | "Network" | "Storage" | "Processing"
+  status: "online" | "warning" | "maintenance" | "offline"
+  health: number
+  cpu: number
+  memory: number
+  storage: number
+  uptime: string
+  location: string
+  lastMaintenance: string
+}
+
 export default function SystemsPage() {
-  const [selectedSystem, setSelectedSystem] = useState(null)
+  const [selectedSystem, setSelectedSystem] = useState<System | null>(null)
 
   const systems = [
     {
@@ -100,9 +114,9 @@ export default function SystemsPage() {
       location: "Data Center 1",
       lastMaintenance: "2025-05-10",
     },
-  ]
+  ] as const
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: System["status"]) => {
     switch (status) {
       case "online":
         return "bg-white/20 text-white"
@@ -117,7 +131,7 @@ export default function SystemsPage() {
     }
   }
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: System["status"]) => {
     switch (status) {
       case "online":
         return <CheckCircle className="w-4 h-4" />
@@ -132,7 +146,7 @@ export default function SystemsPage() {
     }
   }
 
-  const getSystemIcon = (type) => {
+  const getSystemIcon = (type: System["type"]) => {
     switch (type) {
       case "Primary Server":
         return <Server className="w-6 h-6" />
@@ -151,7 +165,7 @@ export default function SystemsPage() {
     }
   }
 
-  const getHealthColor = (health) => {
+  const getHealthColor = (health: System["health"]) => {
     if (health >= 95) return "text-white"
     if (health >= 85) return "text-white"
     if (health >= 70) return "text-orange-500"

@@ -6,9 +6,19 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Filter, MoreHorizontal, MapPin, Clock, Shield } from "lucide-react"
 
+type Agent = {
+  id: string
+  name: string
+  status: "active" | "standby" | "compromised" | "training"
+  location: string
+  lastSeen: string
+  missions: number
+  risk: "high" | "medium" | "critical" | "low"
+}
+
 export default function AgentNetworkPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedAgent, setSelectedAgent] = useState(null)
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null)
 
   const agents = [
     {
@@ -83,7 +93,7 @@ export default function AgentNetworkPage() {
       missions: 38,
       risk: "medium",
     },
-  ]
+  ] as const
 
   const filteredAgents = agents.filter(
     (agent) =>
